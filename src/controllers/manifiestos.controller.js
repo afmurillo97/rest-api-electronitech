@@ -15,7 +15,7 @@ const getManifiestos = async (req, res) =>  {
 
 const getManifiesto = async (req, res) =>  {
     try {
-        console.log(req.params);
+        // console.log(req.params);
         const { id } = req.params;
         const connection = await getConnection();
         const result = await connection.query("SELECT * FROM manifiestos WHERE id = ?", id);
