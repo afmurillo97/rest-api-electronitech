@@ -5,7 +5,7 @@ const router = Router();
 
 router.get("/", manifiestosController.getManifiestos);
 router.get("/:id", manifiestosController.getManifiesto);
-router.post("/", manifiestosController.addtManifiesto);
+router.post("/", manifiestosController.addManifiesto);
 router.delete("/:id", manifiestosController.deleteManifiesto);
 router.put("/:id", manifiestosController.updateManifiesto);
 
