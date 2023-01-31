@@ -1,9 +1,9 @@
 import { getConnection } from "./../database/database";
 
-const getManifiestos = async (req, res) =>  {
+const getProveedores = async (req, res) =>  {
     try {
         const connection = await getConnection();
-        const result = await connection.query("SELECT * FROM manifiestos");
+        const result = await connection.query("SELECT * FROM proveedores");
         // console.log(result);
         res.json(result);
     } catch (error) {
@@ -13,12 +13,12 @@ const getManifiestos = async (req, res) =>  {
     }  
 };
 
-const getManifiesto = async (req, res) =>  {
+const getProveedor = async (req, res) =>  {
     try {
         console.log(req.body);
         const { id } = req.params;
         const connection = await getConnection();
-        const result = await connection.query("SELECT * FROM manifiestos WHERE id = ?", id);
+        const result = await connection.query("SELECT * FROM proveedores WHERE id = ?", id);
         res.json(result);
     } catch (error) {
         // Error(500): Server Error
@@ -27,18 +27,18 @@ const getManifiesto = async (req, res) =>  {
     }  
 };
 
-const addManifiesto = async (req, res) =>  {
+const addProveedor = async (req, res) =>  {
     try {
-        const { nombre, documento, descripcion } = req.body;
+        const { nombre, nit, representante, direccion, celular, ciudad, email, regimen } = req.body;
 
         if(nombre === undefined){
             res.status(400).json({ message: "Bad Request. Please fill a field 'name'" });
         }
 
-        const manifiesto = { nombre, documento, descripcion }
+        const proveedor = { nombre, nit, representante, direccion, celular, ciudad, email, regimen }
         const connection = await getConnection();
-        await connection.query(`INSERT INTO manifiestos SET ?`, manifiesto)
-        res.json({ message: "Manifiesto Añadido Exitosamente!!" });
+        await connection.query(`INSERT INTO proveedores SET ?`, proveedor)
+        res.json({ message: "Proveedor Añadido Exitosamente!!" });
     } catch (error) {
         // Error(500): Server Error
         res.status(500);
@@ -46,12 +46,12 @@ const addManifiesto = async (req, res) =>  {
     }  
 };
 
-const deleteManifiesto = async (req, res) =>  {
+const deleteProveedor = async (req, res) =>  {
     try {
         console.log(req.params);
         const { id } = req.params;
         const connection = await getConnection();
-        const result = await connection.query("DELETE FROM manifiestos WHERE id = ?", id);
+        const result = await connection.query("DELETE FROM proveedores WHERE id = ?", id);
         res.json(result);
     } catch (error) {
         // Error(500): Server Error
@@ -60,19 +60,19 @@ const deleteManifiesto = async (req, res) =>  {
     }  
 };
 
-const updateManifiesto = async (req, res) =>  {
+const updateProveedor = async (req, res) =>  {
     try {
         const { id } = req.params;
-        const { nombre, documento, descripcion } = req.body;
+        const { nombre, nit, representante, direccion, celular, ciudad, email, regimen } = req.body;
 
         if(!id || nombre === undefined){
             res.status(400).json({ message: "Bad Request. Please fill a field 'name'"});
         };
 
-        const manifiesto = { id, nombre, documento, descripcion };
+        const proveedor = { id, nombre, nit, representante, direccion, celular, ciudad, email, regimen };
         const connection = await getConnection();
-        await connection.query(`UPDATE manifiestos SET ? WHERE id = ?`, [manifiesto, id]);
-        res.json({ message: "Manifiesto Actualizado Exitosamente!!" });
+        await connection.query(`UPDATE proveedores SET ? WHERE id = ?`, [proveedor, id]);
+        res.json({ message: "Proveedor Actualizado Exitosamente!!" });
     } catch (error) {
         // Error(500): Server Error
         res.status(500);
@@ -81,9 +81,9 @@ const updateManifiesto = async (req, res) =>  {
 };
 
 export const methods = {
-    getManifiestos,
-    addManifiesto,
-    getManifiesto,
-    deleteManifiesto,
-    updateManifiesto
+    getProveedores,
+    addProveedor,
+    getProveedor,
+    deleteProveedor,
+    updateProveedor
 };

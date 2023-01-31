@@ -1,9 +1,9 @@
 import { getConnection } from "./../database/database";
 
-const getManifiestos = async (req, res) =>  {
+const getArticulos = async (req, res) =>  {
     try {
         const connection = await getConnection();
-        const result = await connection.query("SELECT * FROM manifiestos");
+        const result = await connection.query("SELECT * FROM articulos");
         // console.log(result);
         res.json(result);
     } catch (error) {
@@ -13,12 +13,12 @@ const getManifiestos = async (req, res) =>  {
     }  
 };
 
-const getManifiesto = async (req, res) =>  {
+const getArticulo = async (req, res) =>  {
     try {
         console.log(req.body);
         const { id } = req.params;
         const connection = await getConnection();
-        const result = await connection.query("SELECT * FROM manifiestos WHERE id = ?", id);
+        const result = await connection.query("SELECT * FROM articulos WHERE id = ?", id);
         res.json(result);
     } catch (error) {
         // Error(500): Server Error
@@ -27,18 +27,18 @@ const getManifiesto = async (req, res) =>  {
     }  
 };
 
-const addManifiesto = async (req, res) =>  {
+const addArticulo = async (req, res) =>  {
     try {
-        const { nombre, documento, descripcion } = req.body;
+        const { idCliente, direccion, idServicio, serie, tipo, inventario, idTipoEquipo, idEquipo, idRegistro, ubicacion, codDoc } = req.body;
 
         if(nombre === undefined){
             res.status(400).json({ message: "Bad Request. Please fill a field 'name'" });
         }
 
-        const manifiesto = { nombre, documento, descripcion }
+        const articulo = { idCliente, direccion, idServicio, serie, tipo, inventario, idTipoEquipo, idEquipo, idRegistro, ubicacion, codDoc }
         const connection = await getConnection();
-        await connection.query(`INSERT INTO manifiestos SET ?`, manifiesto)
-        res.json({ message: "Manifiesto Añadido Exitosamente!!" });
+        await connection.query(`INSERT INTO articulos SET ?`, articulo)
+        res.json({ message: "Articulo Añadido Exitosamente!!" });
     } catch (error) {
         // Error(500): Server Error
         res.status(500);
@@ -46,12 +46,12 @@ const addManifiesto = async (req, res) =>  {
     }  
 };
 
-const deleteManifiesto = async (req, res) =>  {
+const deleteArticulo = async (req, res) =>  {
     try {
         console.log(req.params);
         const { id } = req.params;
         const connection = await getConnection();
-        const result = await connection.query("DELETE FROM manifiestos WHERE id = ?", id);
+        const result = await connection.query("DELETE FROM articulos WHERE id = ?", id);
         res.json(result);
     } catch (error) {
         // Error(500): Server Error
@@ -60,19 +60,19 @@ const deleteManifiesto = async (req, res) =>  {
     }  
 };
 
-const updateManifiesto = async (req, res) =>  {
+const updateArticulo = async (req, res) =>  {
     try {
         const { id } = req.params;
-        const { nombre, documento, descripcion } = req.body;
+        const { idCliente, direccion, idServicio, serie, tipo, inventario, idTipoEquipo, idEquipo, idRegistro, ubicacion, codDoc } = req.body;
 
         if(!id || nombre === undefined){
             res.status(400).json({ message: "Bad Request. Please fill a field 'name'"});
         };
 
-        const manifiesto = { id, nombre, documento, descripcion };
+        const articulo = { id, idCliente, direccion, idServicio, serie, tipo, inventario, idTipoEquipo, idEquipo, idRegistro, ubicacion, codDoc };
         const connection = await getConnection();
-        await connection.query(`UPDATE manifiestos SET ? WHERE id = ?`, [manifiesto, id]);
-        res.json({ message: "Manifiesto Actualizado Exitosamente!!" });
+        await connection.query(`UPDATE articulos SET ? WHERE id = ?`, [articulo, id]);
+        res.json({ message: "Articulo Actualizado Exitosamente!!" });
     } catch (error) {
         // Error(500): Server Error
         res.status(500);
@@ -81,9 +81,9 @@ const updateManifiesto = async (req, res) =>  {
 };
 
 export const methods = {
-    getManifiestos,
-    addManifiesto,
-    getManifiesto,
-    deleteManifiesto,
-    updateManifiesto
+    getArticulos,
+    addArticulo,
+    getArticulo,
+    deleteArticulo,
+    updateArticulo
 };

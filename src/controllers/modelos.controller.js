@@ -1,9 +1,9 @@
 import { getConnection } from "./../database/database";
 
-const getManifiestos = async (req, res) =>  {
+const getModelos = async (req, res) =>  {
     try {
         const connection = await getConnection();
-        const result = await connection.query("SELECT * FROM manifiestos");
+        const result = await connection.query("SELECT * FROM modelos");
         // console.log(result);
         res.json(result);
     } catch (error) {
@@ -13,12 +13,12 @@ const getManifiestos = async (req, res) =>  {
     }  
 };
 
-const getManifiesto = async (req, res) =>  {
+const getModelo = async (req, res) =>  {
     try {
         console.log(req.body);
         const { id } = req.params;
         const connection = await getConnection();
-        const result = await connection.query("SELECT * FROM manifiestos WHERE id = ?", id);
+        const result = await connection.query("SELECT * FROM modelos WHERE id = ?", id);
         res.json(result);
     } catch (error) {
         // Error(500): Server Error
@@ -27,18 +27,18 @@ const getManifiesto = async (req, res) =>  {
     }  
 };
 
-const addManifiesto = async (req, res) =>  {
+const addModelo = async (req, res) =>  {
     try {
-        const { nombre, documento, descripcion } = req.body;
+        const { nombre, idMarca, descripcion } = req.body;
 
         if(nombre === undefined){
             res.status(400).json({ message: "Bad Request. Please fill a field 'name'" });
         }
 
-        const manifiesto = { nombre, documento, descripcion }
+        const modelo = { nombre, idMarca, descripcion }
         const connection = await getConnection();
-        await connection.query(`INSERT INTO manifiestos SET ?`, manifiesto)
-        res.json({ message: "Manifiesto Añadido Exitosamente!!" });
+        await connection.query(`INSERT INTO modelos SET ?`, modelo)
+        res.json({ message: "Modelo Añadido Exitosamente!!" });
     } catch (error) {
         // Error(500): Server Error
         res.status(500);
@@ -46,12 +46,12 @@ const addManifiesto = async (req, res) =>  {
     }  
 };
 
-const deleteManifiesto = async (req, res) =>  {
+const deleteModelo = async (req, res) =>  {
     try {
         console.log(req.params);
         const { id } = req.params;
         const connection = await getConnection();
-        const result = await connection.query("DELETE FROM manifiestos WHERE id = ?", id);
+        const result = await connection.query("DELETE FROM modelos WHERE id = ?", id);
         res.json(result);
     } catch (error) {
         // Error(500): Server Error
@@ -60,19 +60,19 @@ const deleteManifiesto = async (req, res) =>  {
     }  
 };
 
-const updateManifiesto = async (req, res) =>  {
+const updateModelo = async (req, res) =>  {
     try {
         const { id } = req.params;
-        const { nombre, documento, descripcion } = req.body;
+        const { nombre, idMarca, descripcion } = req.body;
 
         if(!id || nombre === undefined){
             res.status(400).json({ message: "Bad Request. Please fill a field 'name'"});
         };
 
-        const manifiesto = { id, nombre, documento, descripcion };
+        const modelo = { id, nombre, idMarca, descripcion };
         const connection = await getConnection();
-        await connection.query(`UPDATE manifiestos SET ? WHERE id = ?`, [manifiesto, id]);
-        res.json({ message: "Manifiesto Actualizado Exitosamente!!" });
+        await connection.query(`UPDATE modelos SET ? WHERE id = ?`, [modelo, id]);
+        res.json({ message: "Modelo Actualizado Exitosamente!!" });
     } catch (error) {
         // Error(500): Server Error
         res.status(500);
@@ -81,9 +81,9 @@ const updateManifiesto = async (req, res) =>  {
 };
 
 export const methods = {
-    getManifiestos,
-    addManifiesto,
-    getManifiesto,
-    deleteManifiesto,
-    updateManifiesto
+    getModelos,
+    addModelo,
+    getModelo,
+    deleteModelo,
+    updateModelo
 };

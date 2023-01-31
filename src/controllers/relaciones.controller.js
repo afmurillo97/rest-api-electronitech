@@ -1,9 +1,9 @@
 import { getConnection } from "./../database/database";
 
-const getManifiestos = async (req, res) =>  {
+const getRelaciones = async (req, res) =>  {
     try {
         const connection = await getConnection();
-        const result = await connection.query("SELECT * FROM manifiestos");
+        const result = await connection.query("SELECT * FROM relaciones");
         // console.log(result);
         res.json(result);
     } catch (error) {
@@ -13,12 +13,12 @@ const getManifiestos = async (req, res) =>  {
     }  
 };
 
-const getManifiesto = async (req, res) =>  {
+const getRelacion = async (req, res) =>  {
     try {
         console.log(req.body);
         const { id } = req.params;
         const connection = await getConnection();
-        const result = await connection.query("SELECT * FROM manifiestos WHERE id = ?", id);
+        const result = await connection.query("SELECT * FROM relaciones WHERE id = ?", id);
         res.json(result);
     } catch (error) {
         // Error(500): Server Error
@@ -27,18 +27,18 @@ const getManifiesto = async (req, res) =>  {
     }  
 };
 
-const addManifiesto = async (req, res) =>  {
+const addRelacion = async (req, res) =>  {
     try {
-        const { nombre, documento, descripcion } = req.body;
+        const { modulo, pestana, nombre, valores, idPrincipal } = req.body;
 
         if(nombre === undefined){
-            res.status(400).json({ message: "Bad Request. Please fill a field 'name'" });
+            res.status(400).json({ message: "Bad Request. Please fill a field" });
         }
 
-        const manifiesto = { nombre, documento, descripcion }
+        const relacion = { modulo, pestana, nombre, valores, idPrincipal }
         const connection = await getConnection();
-        await connection.query(`INSERT INTO manifiestos SET ?`, manifiesto)
-        res.json({ message: "Manifiesto Añadido Exitosamente!!" });
+        await connection.query(`INSERT INTO relaciones SET ?`, relacion)
+        res.json({ message: "Relacion Añadida Exitosamente!!" });
     } catch (error) {
         // Error(500): Server Error
         res.status(500);
@@ -46,12 +46,12 @@ const addManifiesto = async (req, res) =>  {
     }  
 };
 
-const deleteManifiesto = async (req, res) =>  {
+const deleteRelacion = async (req, res) =>  {
     try {
         console.log(req.params);
         const { id } = req.params;
         const connection = await getConnection();
-        const result = await connection.query("DELETE FROM manifiestos WHERE id = ?", id);
+        const result = await connection.query("DELETE FROM relaciones WHERE id = ?", id);
         res.json(result);
     } catch (error) {
         // Error(500): Server Error
@@ -60,19 +60,19 @@ const deleteManifiesto = async (req, res) =>  {
     }  
 };
 
-const updateManifiesto = async (req, res) =>  {
+const updateRelacion = async (req, res) =>  {
     try {
         const { id } = req.params;
-        const { nombre, documento, descripcion } = req.body;
+        const { modulo, pestana, nombre, valores, idPrincipal } = req.body;
 
         if(!id || nombre === undefined){
-            res.status(400).json({ message: "Bad Request. Please fill a field 'name'"});
+            res.status(400).json({ message: "Bad Request. Please fill a field"});
         };
 
-        const manifiesto = { id, nombre, documento, descripcion };
+        const relacion = { id, modulo, pestana, nombre, valores, idPrincipal };
         const connection = await getConnection();
-        await connection.query(`UPDATE manifiestos SET ? WHERE id = ?`, [manifiesto, id]);
-        res.json({ message: "Manifiesto Actualizado Exitosamente!!" });
+        await connection.query(`UPDATE relaciones SET ? WHERE id = ?`, [relacion, id]);
+        res.json({ message: "Relacion Actualizada Exitosamente!!" });
     } catch (error) {
         // Error(500): Server Error
         res.status(500);
@@ -81,9 +81,9 @@ const updateManifiesto = async (req, res) =>  {
 };
 
 export const methods = {
-    getManifiestos,
-    addManifiesto,
-    getManifiesto,
-    deleteManifiesto,
-    updateManifiesto
+    getRelaciones,
+    addRelacion,
+    getRelacion,
+    deleteRelacion,
+    updateRelacion
 };
